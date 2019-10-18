@@ -30,6 +30,23 @@ module.exports.handler = async (event) => {
     }
 }
 
+module.exports.getPerson = async (event) => {
+    try {
+        const person = await docClient.get({ TableName: 'Persons', Key: { 'personKey': event.pathParameters.id } }).promise()
+        return {
+            statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'success', person: person.Item })
+          }
+    } catch (err) {
+        return {
+            statusCode: 200,
+            status: 'error',
+            message: err
+        }
+    }
+}
+
 module.exports.addPerson = async (event) => {  
     try {
         const { body } = event
@@ -58,7 +75,68 @@ module.exports.addPerson = async (event) => {
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 status: 'success',
-                message: 'Member sucessfuly created',
+                message: 'Member successfully created',
+                personKey
+            })
+        }
+    } catch (err) {
+        return {
+            statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                status: 'error',
+                message: err.message
+            })
+        }
+    }
+}
+
+module.exports.updatePerson = async (event) => {  
+    try {
+        const { body } = event
+        const input = JSON.parse(body)
+        const { personKey, firstName, lastName, age } = input
+
+        if (!personKey) {
+            return {
+                statusCode: 200,
+                headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status: 'error',
+                    message: 'A person record was not provided'
+                })
+            }
+        }
+
+        if (!firstName || !lastName || !age) {
+            return {
+                statusCode: 200,
+                headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status: 'error',
+                    message: 'Please complete all fields'
+                })
+            }
+        }
+
+        const params = {
+            TableName: 'Persons',
+            Key: { personKey },
+            UpdateExpression: "set firstName = :firstName, lastName = :lastName, age = :age",
+            ExpressionAttributeValues:{
+                ":firstName":firstName,
+                ":lastName":lastName,
+                ":age":age,
+            },
+            ReturnValues:"UPDATED_NEW"
+        }
+        const data = await docClient.update(params).promise()
+        return {
+            statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                status: 'success',
+                message: 'Member successfully updated',
                 personKey
             })
         }
@@ -91,8 +169,6 @@ module.exports.deletePerson = async (event) => {
             }
         }
 
-        console.log('[' + personKey)
-
         const params = {
             TableName: 'Persons',
             Key: { personKey }
@@ -103,7 +179,7 @@ module.exports.deletePerson = async (event) => {
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 status: 'success',
-                message: 'Member sucessfuly deleted',
+                message: 'Member successfully deleted',
                 personKey
             })
         }

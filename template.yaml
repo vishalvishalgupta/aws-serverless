@@ -21,6 +21,17 @@ Resources:
           Properties:
             Path: /
             Method: GET
+  GetPerson:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getPerson
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /person/{id}
+            Method: GET
   AddPerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -31,6 +42,17 @@ Resources:
           Type: Api
           Properties:
             Path: /add
+            Method: POST
+  UpdatePerson:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.updatePerson
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /update
             Method: POST
   DeletePerson:
     Type: AWS::Serverless::Function
