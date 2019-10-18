@@ -1,0 +1,58 @@
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'OPTIONS,POST,GET'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
+  Function:
+    Environment:
+      Variables:
+        AWS_DYNAMODB_ENDPOINT: http://docker.for.mac.host.internal:8000
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  Index:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+  AddPerson:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.addPerson
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /add
+            Method: POST
+  DeletePerson:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.deletePerson
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: POST
+  PersonsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: "Persons"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      KeySchema:
+        - AttributeName: "personKey"
+          KeyType: "HASH"
+      AttributeDefinitions:
+        - AttributeName: "personKey"
+          AttributeType: "S"
