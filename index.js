@@ -9,6 +9,7 @@ const uuidv4 = require('uuid/v4')
 
 AWS.config.update({
     dynamodb: { endpoint: process.env.AWS_DYNAMODB_ENDPOINT },
+    region: 'us-west-2',
     apiVersion: '2012-08-10'
 })
 
