@@ -1,14 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
 Globals:
   Api:
     Cors:
       AllowMethods: "'OPTIONS,POST,GET'"
-      AllowHeaders: "'Content-Type'"
+      AllowHeaders: "'*'"
       AllowOrigin: "'*'"
   Function:
     Environment:
       Variables:
         AWS_DYNAMODB_ENDPOINT: http://docker.for.mac.host.internal:8000
-Transform: AWS::Serverless-2016-10-31
+        AWS_REGION: 'us-west-2'
 Resources:
   Index:
     Type: AWS::Serverless::Function
@@ -20,7 +22,7 @@ Resources:
           Type: Api
           Properties:
             Path: /
-            Method: GET
+            Method: get
   GetPerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -31,7 +33,7 @@ Resources:
           Type: Api
           Properties:
             Path: /person/{id}
-            Method: GET
+            Method: get
   AddPerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -42,7 +44,7 @@ Resources:
           Type: Api
           Properties:
             Path: /add
-            Method: POST
+            Method: post
   UpdatePerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -53,7 +55,7 @@ Resources:
           Type: Api
           Properties:
             Path: /update
-            Method: POST
+            Method: post
   DeletePerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -64,7 +66,7 @@ Resources:
           Type: Api
           Properties:
             Path: /delete
-            Method: POST
+            Method: post
   PersonsTable:
     Type: AWS::DynamoDB::Table
     Properties:

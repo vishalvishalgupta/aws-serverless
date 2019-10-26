@@ -21,7 +21,7 @@ Resources:
           Properties:
             Path: /
             Method: GET
-      CodeUri: s3://aws-lambda-dynamodb/9d573d2e2e851edeb82163bb953cc874
+      CodeUri: s3://aws-lambda-dynamodb/96de55d04cb452b3d498f057d920b9ec
   GetPerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -33,7 +33,7 @@ Resources:
           Properties:
             Path: /person/{id}
             Method: GET
-      CodeUri: s3://aws-lambda-dynamodb/9d573d2e2e851edeb82163bb953cc874
+      CodeUri: s3://aws-lambda-dynamodb/96de55d04cb452b3d498f057d920b9ec
   AddPerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -45,7 +45,7 @@ Resources:
           Properties:
             Path: /add
             Method: POST
-      CodeUri: s3://aws-lambda-dynamodb/9d573d2e2e851edeb82163bb953cc874
+      CodeUri: s3://aws-lambda-dynamodb/96de55d04cb452b3d498f057d920b9ec
   UpdatePerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -57,7 +57,7 @@ Resources:
           Properties:
             Path: /update
             Method: POST
-      CodeUri: s3://aws-lambda-dynamodb/9d573d2e2e851edeb82163bb953cc874
+      CodeUri: s3://aws-lambda-dynamodb/96de55d04cb452b3d498f057d920b9ec
   DeletePerson:
     Type: AWS::Serverless::Function
     Properties:
@@ -69,7 +69,7 @@ Resources:
           Properties:
             Path: /delete
             Method: POST
-      CodeUri: s3://aws-lambda-dynamodb/9d573d2e2e851edeb82163bb953cc874
+      CodeUri: s3://aws-lambda-dynamodb/96de55d04cb452b3d498f057d920b9ec
   PersonsTable:
     Type: AWS::DynamoDB::Table
     Properties:
