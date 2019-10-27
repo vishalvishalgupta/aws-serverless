@@ -9,7 +9,7 @@ const uuidv4 = require('uuid/v4')
 
 AWS.config.update({
     region: 'us-west-2',
-    // dynamodb: { endpoint: process.env.AWS_DYNAMODB_ENDPOINT },
+    dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT },
     apiVersion: '2012-08-10'
 })
 
@@ -20,7 +20,7 @@ module.exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ persons: persons.Items, v: 4 })
+            body: JSON.stringify({ persons: persons.Items, v: 5 })
           }
     } catch (err) {
         return {
