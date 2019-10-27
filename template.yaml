@@ -10,7 +10,7 @@ Globals:
     Environment:
       Variables:
         AWS_DYNAMODB_ENDPOINT: http://docker.for.mac.host.internal:8000
-        AWS_REGION: 'us-west-2'
+        REGION: 'us-west-2'
 Resources:
   Index:
     Type: AWS::Serverless::Function
@@ -67,6 +67,27 @@ Resources:
           Properties:
             Path: /delete
             Method: post
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: lambda-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+            - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+              - lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaExecute
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
+      Path: /
+
   PersonsTable:
     Type: AWS::DynamoDB::Table
     Properties:
