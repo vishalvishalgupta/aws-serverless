@@ -7,6 +7,7 @@ Globals:
       AllowHeaders: "'*'"
       AllowOrigin: "'*'"
   Function:
+    Policies: AmazonDynamoDBFullAccess
     Environment:
       Variables:
         AWS_DYNAMODB_ENDPOINT: http://docker.for.mac.host.internal:8000
