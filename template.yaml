@@ -60,8 +60,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.deletePerson
-      Events:
       Runtime: nodejs10.x
+      Events:
         GetEvent:
           Type: Api
           Properties:
