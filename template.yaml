@@ -17,7 +17,6 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs10.x
-      CodeUri: ./
       Events:
         GetEvent:
           Type: Api
@@ -29,7 +28,6 @@ Resources:
     Properties:
       Handler: index.getPerson
       Runtime: nodejs10.x
-      CodeUri: ./
       Events:
         GetEvent:
           Type: Api
@@ -41,7 +39,6 @@ Resources:
     Properties:
       Handler: index.addPerson
       Runtime: nodejs10.x
-      CodeUri: ./
       Events:
         GetEvent:
           Type: Api
@@ -53,7 +50,6 @@ Resources:
     Properties:
       Handler: index.updatePerson
       Runtime: nodejs10.x
-      CodeUri: ./
       Events:
         GetEvent:
           Type: Api
@@ -64,9 +60,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.deletePerson
-      Runtime: nodejs10.x
-      CodeUri: ./
       Events:
+      Runtime: nodejs10.x
         GetEvent:
           Type: Api
           Properties:
