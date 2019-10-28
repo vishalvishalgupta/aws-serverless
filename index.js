@@ -20,7 +20,7 @@ module.exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ persons: persons.Items, v: 2 })
+            body: JSON.stringify({ persons: persons.Items, v: 3 })
           }
     } catch (err) {
         return {
