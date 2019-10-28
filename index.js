@@ -8,7 +8,7 @@ require('dotenv').config() // process.env variables
 const uuidv4 = require('uuid/v4')
 
 AWS.config.update({
-    region: 'us-west-2',
+    region: process.env.REGION,
     dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT },
     apiVersion: '2012-08-10'
 })
