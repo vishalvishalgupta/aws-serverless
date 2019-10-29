@@ -9,6 +9,7 @@ Globals:
   Function:
     Environment:
       Variables:
+        ENVIRONMENT: 'localhost'
         DYNAMODB_ENDPOINT: http://docker.for.mac.host.internal:8000
         REGION: 'us-west-2'
 Resources:
