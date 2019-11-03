@@ -7,20 +7,18 @@ const AWS = require('aws-sdk') // dev dependency to save space
 require('dotenv').config() // process.env variables
 const uuidv4 = require('uuid/v4')
 
-AWS.config.update({
-    region: process.env.REGION,
-    dynamodb: { endpoint: process.env.ENVIRONMENT === 'localhost' ? process.env.DYNAMODB_ENDPOINT : '' },
-    apiVersion: '2012-08-10'
-})
+AWS.config.update({ region: process.env.REGION, apiVersion: '2012-08-10' })
+if (process.env.ENVIRONMENT === 'localhost') AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } })
 
 const docClient = new AWS.DynamoDB.DocumentClient()
+
 module.exports.handler = async (event) => {
     try {
         const persons = await docClient.scan({ TableName: "Persons" }).promise()
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ persons: persons.Items, v: 2 })
+            body: JSON.stringify({ persons: persons.Items, v: 1 })
           }
     } catch (err) {
         return {
