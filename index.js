@@ -15,7 +15,7 @@ require('dotenv').config() // process.env variables
 const uuidv4 = require('uuid/v4')
 
 AWS.config.update({ region: process.env.REGION, apiVersion: '2012-08-10' })
-if (process.env.LOCAL) AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } })
+if (process.env.LOCAL_DYNAMODB_ENDPOINT) AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } })
 
 const docClient = new AWS.DynamoDB.DocumentClient()
 
@@ -26,7 +26,7 @@ module.exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ persons: persons.Items, v: 2 })
+            body: JSON.stringify({ persons: persons.Items, v: 1 })
           }
     } catch (err) {
         return {
