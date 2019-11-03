@@ -3,6 +3,13 @@
 // docker run -p 8000:8000 -v $(pwd)/local/dynamodb:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data
 // sam local start-api --port 3030 --skip-pull-image
 
+/*
+THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
+THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
+THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
+THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
+THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
+*/
 const AWS = require('aws-sdk') // dev dependency to save space
 require('dotenv').config() // process.env variables
 const uuidv4 = require('uuid/v4')
@@ -14,6 +21,7 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 
 module.exports.handler = async (event) => {
     try {
+        // THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
         const persons = await docClient.scan({ TableName: "Persons" }).promise()
         return {
             statusCode: 200,
