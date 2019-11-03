@@ -21,7 +21,6 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 
 module.exports.handler = async (event) => {
     try {
-        console.log(process.env.ENVIRONMENT)
         // THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
         const persons = await docClient.scan({ TableName: "Persons" }).promise()
         return {
