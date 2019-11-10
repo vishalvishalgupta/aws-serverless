@@ -209,7 +209,7 @@ module.exports.getUploadLocation = async (event) => {
         fileName = updateFileName(fileName)
 
         const s3bucket = new AWS.S3({
-            region: process.env.AWS_BUCKET_REGION,
+            region: process.env.AWS_BUCKET_REGION, // MUST BE THE SAME REGION AS YOUR BUCKET!!!
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             Bucket: process.env.AWS_BUCKET
