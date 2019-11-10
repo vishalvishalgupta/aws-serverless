@@ -74,6 +74,17 @@ Resources:
           Properties:
             Path: /delete
             Method: post
+  GetUploadFile:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getUploadLocation
+      Runtime: nodejs10.x
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /get-upload-filename
+            Method: post
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:

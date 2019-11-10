@@ -15,19 +15,19 @@ require('dotenv').config() // process.env variables
 const uuidv4 = require('uuid/v4')
 
 AWS.config.update({ region: process.env.REGION, apiVersion: '2012-08-10' })
-if (process.env.LOCAL_DYNAMODB_ENDPOINT) AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } })
+if (process.env.DYNAMODB_ENDPOINT) AWS.config.update({ dynamodb: { endpoint: process.env.DYNAMODB_ENDPOINT } })
 
 const docClient = new AWS.DynamoDB.DocumentClient()
 
 module.exports.handler = async (event) => {
     try {
         // THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY
-        const persons = await docClient.scan({ TableName: "Persons" }).promise()
+        const persons = await docClient.scan({ TableName: "Persons" }).promise()        
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ persons: persons.Items, v: 2 })
-          }
+            body: JSON.stringify({ persons: persons.Items, v: 1 })
+        }
     } catch (err) {
         return {
             statusCode: 200,
@@ -159,7 +159,7 @@ module.exports.updatePerson = async (event) => {
     }
 }
 
-module.exports.deletePerson = async (event) => {  
+module.exports.deletePerson = async (event) => {
     try {
         const { body } = event
         const input = JSON.parse(body)
@@ -200,4 +200,65 @@ module.exports.deletePerson = async (event) => {
             })
         }
     }
+}
+
+module.exports.getUploadLocation = async (event) => {
+    try {
+        const content = JSON.parse(event.body)
+        let fileName = content.fileName
+        fileName = updateFileName(fileName)
+
+        const s3bucket = new AWS.S3({
+            region: process.env.AWS_BUCKET_REGION,
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            Bucket: process.env.AWS_BUCKET
+        })
+
+        let s3Params = {
+            Bucket: process.env.AWS_BUCKET,
+            Key: process.env.AWS_BUCKET_FOLDER + '/' + fileName,
+            Expires: 60,
+            ContentType: 'image/*',
+        }
+
+        const data = await s3bucket.getSignedUrl('putObject', s3Params)
+        return {
+            statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ signedUrl: data })
+        }
+    } catch (err) {
+        return {
+            statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+            status: 'error',
+            message: err.message
+        }
+    }
+}
+
+function updateFileName(fileName) {
+    if (!fileName) return
+
+    fileName = fileName.toLowerCase()
+    // strip out non-alpha numeric, dots, hyphens, underscores
+    fileName = fileName.replace(/[^a-z-0-9.-_]+/gi, '')
+    if (fileName === '') return
+    if (fileName.indexOf('.') === -1) return
+
+    // assign a random five digit number
+    let min = Math.ceil(10000)
+    let max = Math.floor(99999)
+    const randomNumber = (Math.floor(Math.random() * (max - min + 1)) + min).toString()
+
+    const existingFileName = fileName.split('.')
+    let newFileName = ''
+    for (let i = 0; i < existingFileName.length-1; i++) {
+        newFileName = newFileName + existingFileName[i] + '.'
+    }
+
+    newFileName = newFileName.substr(0, newFileName.length - 1)
+    const fileExtension = fileName.split('.').pop()
+    return newFileName + '-' + randomNumber + '.' + fileExtension
 }
