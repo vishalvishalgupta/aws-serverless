@@ -56,9 +56,8 @@ module.exports.getPerson = async (event) => {
 
 module.exports.addPerson = async (event) => {  
     try {
-        const { body } = event
-        const input = JSON.parse(body)
-        const { firstName, lastName, age } = input
+        const body = JSON.parse(JSON.stringify(event.body))
+        const { firstName, lastName, age } = JSON.parse(body)
 
         if (!firstName || !lastName || !age) {
             return {
@@ -100,9 +99,8 @@ module.exports.addPerson = async (event) => {
 
 module.exports.updatePerson = async (event) => {  
     try {
-        const { body } = event
-        const input = JSON.parse(body)
-        const { personKey, firstName, lastName, age } = input
+        const body = JSON.parse(JSON.stringify(event.body))
+        const { personKey, firstName, lastName, age } = JSON.parse(body)
 
         if (!personKey) {
             return {
