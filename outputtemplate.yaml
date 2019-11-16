@@ -1,18 +1,15 @@
-# THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY #
-# THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY #
-# THIS CODE IS NOT PRODUCTION WORTH - FOR TUTORIAL PURPOSES ONLY #
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Api:
     Cors:
-      AllowMethods: "'OPTIONS,POST,GET'"
-      AllowHeaders: "'*'"
-      AllowOrigin: "'*'"
+      AllowMethods: '''OPTIONS,POST,GET'''
+      AllowHeaders: '''*'''
+      AllowOrigin: '''*'''
   Function:
     Environment:
       Variables:
-        REGION: 'us-west-2' # Specify your region here
+        REGION: us-west-2
 Resources:
   Index:
     Type: AWS::Serverless::Function
@@ -26,6 +23,7 @@ Resources:
           Properties:
             Path: /
             Method: get
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
   GetPlace:
     Type: AWS::Serverless::Function
     Properties:
@@ -38,6 +36,7 @@ Resources:
           Properties:
             Path: /place/{id}
             Method: get
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
   CreatePlace:
     Type: AWS::Serverless::Function
     Properties:
@@ -50,6 +49,7 @@ Resources:
           Properties:
             Path: /create
             Method: post
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
   UpdatePlace:
     Type: AWS::Serverless::Function
     Properties:
@@ -62,6 +62,7 @@ Resources:
           Properties:
             Path: /update
             Method: post
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
   DeletePlace:
     Type: AWS::Serverless::Function
     Properties:
@@ -74,6 +75,7 @@ Resources:
           Properties:
             Path: /delete
             Method: post
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
   GetUploadLocation:
     Type: AWS::Serverless::Function
     Properties:
@@ -86,57 +88,31 @@ Resources:
           Properties:
             Path: /get-upload-location
             Method: post
-  #LambdaRole:
-  #  Type: AWS::IAM::Role
-  #  Properties:
-  #    RoleName:
-  #      Fn::Sub: lambda-role
-  #    AssumeRolePolicyDocument:
-  #      Statement:
-  #        - Action:
-  #          - sts:AssumeRole
-  #          Effect: Allow
-  #          Principal:
-  #            Service:
-  #            - lambda.amazonaws.com
-  #      Version: 2012-10-17
-  #    ManagedPolicyArns:
-  #      - arn:aws:iam::aws:policy/AWSLambdaFullAccess
-  #      - arn:aws:iam::aws:policy/IAMFullAccess
-  #      - arn:aws:iam::aws:policy/AmazonS3FullAccess
-  #      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-  #      - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
-  #      - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
-  #    Path: /
+      CodeUri: s3://aws-serverless-lambda-dynamodb/43797434dcb2a15d3d51a9a7cb6ab072
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: lambda-role
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: 2012-10-17
   PlacesTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: Places
       AttributeDefinitions:
-        - AttributeName: placeKey
-          AttributeType: S
-      #  - AttributeName: countryCode
-      #    AttributeType: S
+      - AttributeName: placeKey
+        AttributeType: S
       KeySchema:
-        - AttributeName: placeKey
-          KeyType: HASH
-      #  - AttributeName: countryCode
-      #    KeyType: RANGE
+      - AttributeName: placeKey
+        KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 1
-      ###################################
-      # SPECIFYING A GLOBAL SECONDARY INDEX
-      # AFFECTS GETTING AN ITEM AND
-      # DELETING AND ITEM BY KEY
-      ###################################
-      #GlobalSecondaryIndexes:
-      #  - IndexName: countryCode-index
-      #    KeySchema:
-      #      - AttributeName: countryCode
-      #        KeyType: HASH
-      #    Projection:
-      #      ProjectionType: ALL
-      #    ProvisionedThroughput:
-      #      ReadCapacityUnits: 2
-      #      WriteCapacityUnits: 1
