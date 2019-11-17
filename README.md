@@ -11,5 +11,8 @@ DYNAMODB_ENDPOINT=http://docker.for.mac.host.internal:8000
 AWS_UPLOAD_BUCKET=YOUR_AWS_UPLOAD_BUCKET   
 AWS_UPLOAD_BUCKET_REGION=YOUR_AWS_UPLOAD_BUCKET_REGION   
 
+A few notes.  
+Adopt least privileged and have a role specifically for uploading to your S3 bucket.  
+Also note, if you attempt to use the local enviornment key `AWS_ACCESS_KEY_ID` it will be overridden by your `aws configure` value.  
 AWS_S3_UPLOAD_ACCESS_KEY_ID=YOUR_KEY  
 AWS_S3_UPLOAD_SECRET_ACCESSKEY=YOUR_SECRET_ACCESS_KEY  
