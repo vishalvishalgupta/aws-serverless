@@ -8,15 +8,12 @@ AWS.config.update({ region: process.env.REGION, apiVersion: '2012-08-10' })
 module.exports.handler = async (event) => {
     try {
         const content = JSON.parse(event.body)
-        
-        console.log(process.env.AWS_ACCESS_KEY_ID)
-        console.log(process.env.AWS_ACCESS_KEYID)
         let fileName = content.fileName
         fileName = updateFileName(fileName)
         const s3bucket = new AWS.S3({
             region: process.env.AWS_UPLOAD_BUCKET_REGION, // MUST BE THE SAME REGION WHERE YOUR BUCKET EXISTS!!!
-            accessKeyId: process.env.AWS_ACCESS_KEYID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
+            accessKeyId: process.env.AWS_S3_UPLOAD_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_S3_UPLOAD_SECRET_ACCESS_KEY,
             Bucket: process.env.AWS_UPLOAD_BUCKET
         })
         
