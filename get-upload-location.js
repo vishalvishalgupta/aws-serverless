@@ -9,13 +9,14 @@ module.exports.handler = async (event) => {
     try {
         const content = JSON.parse(event.body)
         
+        console.log(process.env.AWS_ACCESS_KEY_ID)
+        console.log(process.env.AWS_ACCESS_KEYID)
         let fileName = content.fileName
         fileName = updateFileName(fileName)
-
         const s3bucket = new AWS.S3({
             region: process.env.AWS_UPLOAD_BUCKET_REGION, // MUST BE THE SAME REGION WHERE YOUR BUCKET EXISTS!!!
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            accessKeyId: process.env.AWS_ACCESS_KEYID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
             Bucket: process.env.AWS_UPLOAD_BUCKET
         })
         
