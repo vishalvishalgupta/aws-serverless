@@ -12,7 +12,9 @@ AWS_UPLOAD_BUCKET=YOUR_AWS_UPLOAD_BUCKET
 AWS_UPLOAD_BUCKET_REGION=YOUR_AWS_UPLOAD_BUCKET_REGION   
 
 A few notes.  
-Adopt least privileged and have a role specifically for uploading to your S3 bucket.  
-Also note, if you attempt to use the local enviornment key `AWS_ACCESS_KEY_ID` it will be overridden by your `aws configure` value.  
+###Adopt least privileged###
+Have an account specifically for uploading to your S3 bucket.  
+Also know that if you attempt to use a local enviornment variable named `AWS_ACCESS_KEY_ID` (`process.env.AWS_ACCESS_KEY_ID`) it will be overridden (when run locally) by your `aws configure` value.  Thus, specify a unique environment variable for uploading to S3.
+
 AWS_S3_UPLOAD_ACCESS_KEY_ID=YOUR_KEY  
 AWS_S3_UPLOAD_SECRET_ACCESSKEY=YOUR_SECRET_ACCESS_KEY  
