@@ -19,4 +19,4 @@ Also know that if you attempt to use a local enviornment variable named `AWS_ACC
 `AWS_S3_UPLOAD_ACCESS_KEY_ID=YOUR_KEY`  
 `AWS_S3_UPLOAD_SECRET_ACCESSKEY=YOUR_SECRET_ACCESS_KEY`  
 
-If this helped you please consider making a one-time $1-$3 donation to supporting me at [Patreon](https://www.patreon.com/aaronwht)
+If this helped you consider making a one time $1-$3 donation to support me at [Patreon](https://www.patreon.com/aaronwht)
