@@ -1,19 +1,16 @@
 'use strict'
-
 const AWS = require('aws-sdk')
 require('dotenv').config()
 
-AWS.config.update({ region: process.env.REGION, apiVersion: '2012-08-10' })
-
 module.exports.handler = async (event) => {
     try {
-        const content = JSON.parse(event.body)
-        let fileName = content.fileName
+        const body = JSON.parse(JSON.stringify(event.body))
+        let { fileName } = JSON.parse(body)
         fileName = updateFileName(fileName)
         const s3bucket = new AWS.S3({
-            region: process.env.AWS_UPLOAD_BUCKET_REGION, // MUST BE THE SAME REGION WHERE YOUR BUCKET EXISTS!!!
-            accessKeyId: process.env.AWS_S3_UPLOAD_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_S3_UPLOAD_SECRET_ACCESS_KEY,
+            apiVersion: '2006-03-01',
+            signatureVersion: 'v4',
+            region: process.env.AWS_UPLOAD_BUCKET_REGION,
             Bucket: process.env.AWS_UPLOAD_BUCKET
         })
         
@@ -24,11 +21,19 @@ module.exports.handler = async (event) => {
             ContentType: '*/*',
         }
 
-        const data = await s3bucket.getSignedUrl('putObject', s3Params)
-        return {
-            statusCode: 200,
-            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ signedUrl: data })
+        try {
+                const data = await s3bucket.getSignedUrl('putObject', s3Params)
+                return {
+                    statusCode: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ signedUrl: data })
+                }
+        } catch (err) {
+            return {
+                statusCode: 200,
+                headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'message': err.message })
+            }
         }
     } catch (err) {
         return {
@@ -37,7 +42,7 @@ module.exports.handler = async (event) => {
             status: 'error',
             message: err.message
         }
-    }
+    }   
 }
 
 function updateFileName(fileName) {

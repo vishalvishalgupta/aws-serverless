@@ -86,28 +86,25 @@ Resources:
           Properties:
             Path: /get-upload-location
             Method: post
-  #LambdaRole:
-  #  Type: AWS::IAM::Role
-  #  Properties:
-  #    RoleName:
-  #      Fn::Sub: lambda-role
-  #    AssumeRolePolicyDocument:
-  #      Statement:
-  #        - Action:
-  #          - sts:AssumeRole
-  #          Effect: Allow
-  #          Principal:
-  #            Service:
-  #            - lambda.amazonaws.com
-  #      Version: 2012-10-17
-  #    ManagedPolicyArns:
-  #      - arn:aws:iam::aws:policy/AWSLambdaFullAccess
-  #      - arn:aws:iam::aws:policy/IAMFullAccess
-  #      - arn:aws:iam::aws:policy/AmazonS3FullAccess
-  #      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-  #      - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
-  #      - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
-  #    Path: /
+  S3Upload:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "S3Upload"
+      Path: /
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS: "*"
+          Action: sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service: [lambda.amazonaws.com]
+          Action: sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service: [s3.amazonaws.com]
+          Action: sts:AssumeRole
   PlacesTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -115,28 +112,9 @@ Resources:
       AttributeDefinitions:
         - AttributeName: placeKey
           AttributeType: S
-      #  - AttributeName: countryCode
-      #    AttributeType: S
       KeySchema:
         - AttributeName: placeKey
           KeyType: HASH
-      #  - AttributeName: countryCode
-      #    KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 1
-      ###################################
-      # SPECIFYING A GLOBAL SECONDARY INDEX
-      # AFFECTS GETTING AN ITEM AND
-      # DELETING AND ITEM BY KEY
-      ###################################
-      #GlobalSecondaryIndexes:
-      #  - IndexName: countryCode-index
-      #    KeySchema:
-      #      - AttributeName: countryCode
-      #        KeyType: HASH
-      #    Projection:
-      #      ProjectionType: ALL
-      #    ProvisionedThroughput:
-      #      ReadCapacityUnits: 2
-      #      WriteCapacityUnits: 1
